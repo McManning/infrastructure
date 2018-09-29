@@ -1,0 +1,5 @@
+
+# Create-or-replace existing `nginx-config` from conf/ directory
+
+# kubectl create configmap nginx-config --from-file nginx/conf/
+#   -o yaml --dry-run | kubectl apply -f -
