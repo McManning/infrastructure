@@ -38,6 +38,8 @@ services:
     image: panubo/sshd
     container_name: sshd
     restart: unless-stopped
+    ports:
+      - 2222:22/tcp
     volumes:
       - ${MOUNT_POINT}/sshd/travis-ci/id_rsa.pub:/etc/authorized_keys/travis-ci
       - ${MOUNT_POINT}/sshd/media-rsync/id_rsa.pub:/etc/authorized_keys/media-rsync
