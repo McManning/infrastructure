@@ -1,0 +1,20 @@
+[Unit]
+Description=Services Infrastructure
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+
+[Service]
+WorkingDirectory=/srv
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStartPre=/opt/bin/docker-compose pull --quiet --parallel
+ExecStart=/opt/bin/docker-compose up -d
+
+ExecStop=/opt/bin/docker-compose down
+
+ExecReload=/opt/bin/docker-compose pull --quiet --parallel
+ExecReload=/opt/bin/docker-compose up -d
+
+[Install]
+WantedBy=multi-user.target
