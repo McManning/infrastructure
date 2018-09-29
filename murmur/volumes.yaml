@@ -1,0 +1,33 @@
+---
+# Persistent on-node volume for murmur SQLite
+# (Eventually will just point to a proper SQL server)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: murmur-volume
+  labels:
+    app: murmur
+spec:
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/murmur/data
+  # TODO: Affinity shenanigans if we don't switch over
+  # to an actual SQL server so that we don't accidentally
+  # throw murmur on the wrong node
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: murmur-data-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  selector:
+    matchLabels:
+      app: murmur

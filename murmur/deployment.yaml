@@ -1,0 +1,56 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: murmur
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: murmur
+    spec:
+      volumes:
+      - name: murmur-certs
+        secret:
+          secretName: murmur-certs
+      - name: murmur-config
+        configMap:
+          name: murmur-config
+      - name: murmur-data
+        persistentVolumeClaim:
+          claimName: murmur-data-claim
+      containers:
+      - name: murmur
+        image: goofball222/murmur
+        ports:
+        - name: control
+          containerPort: 64738
+          protocol: TCP
+        - name: voice
+          containerPort: 64738
+          protocol: UDP
+        - name: ice
+          containerPort: 6502
+          protocol: TCP
+        volumeMounts:
+        # Problem here: Murmur writes to the same volume
+        # that the config is stored (creates a temp murmur.iniXXXXX file copy)
+        # since this is a ConfigMap (readonly directory) murmur fails to boot.
+        # - mountPath: /opt/murmur/config
+        #   name: murmur-config
+        # - mountPath: /opt/murmur/cert
+        #   name: murmur-certs
+        # Note that murmur also tries to chown this directory, so we get
+        # a bunch of chown exceptions due to it being readonly...
+        # Can be resolved by an initContainer that copies files from config
+        # into a writable directory (idk about certs though, tbh shouldn't be
+        # writable anyway...)
+        - mountPath: /opt/murmur/data
+          name: murmur-data
+      - name: sybot
+        image: mcmanning/sybot
+        ports:
+        - name: api
+          containerPort: 5000
+          protocol: TCP

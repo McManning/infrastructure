@@ -1,0 +1,5 @@
+
+# Create-or-replace existing `murmur-config` from conf/ directory
+
+# kubectl create configmap murmur-config --from-file murmur/conf/
+#   -o yaml --dry-run | kubectl apply -f -
