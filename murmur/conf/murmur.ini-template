@@ -1,0 +1,28 @@
+
+registerName=Sybolt Social
+
+database=/opt/murmur/data/murmur.sqlite
+
+ice="tcp -h 0.0.0.0 -p 6502"
+icesecretwrite=ICE_SECRET
+logfile=
+
+welcometext=WELCOME_TEXT
+
+port=64738
+bandwidth=72000
+users=100
+
+# sslCert=/opt/murmur/cert/fullchain.pem
+# sslKey=/opt/murmur/cert/privkey.pem
+
+channelnestinglimit=10
+textmessagelength=5000
+imagemessagelength=131072
+allowhtml=true
+
+uname=murmur
+
+[Ice]
+Ice.Warn.UnknownProperties=1
+Ice.MessageSizeMax=65536

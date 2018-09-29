@@ -1,0 +1,177 @@
+---
+# Docker Compose-based setup for non-HA
+# Useful for when we want to throw services onto a lower end
+# host without the overhead that comes with k8s, or for testing
+version: '3'
+services:
+  ###################
+  # General Services
+  ###################
+  nginx:
+    image: nginx:1.9.12
+    container_name: nginx
+    restart: unless-stopped
+    command:
+      - '/usr/sbin/nginx'
+      - '-c'
+      - '/etc/nginx/conf/nginx.conf'
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${MOUNT_POINT}/nginx/conf:/etc/nginx/conf
+      - ${MOUNT_POINT}/public:/usr/local/nginx/html
+      # - /etc/letsencrypt:/etc/nginx/certs
+    environment:
+      - RUN_CHOWN=false
+
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      # Not a fan of this mount. Look into https://github.com/Tecnativa/docker-socket-proxy
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: watchtower sybot --interval 600
+
+  sshd:
+    image: panubo/sshd
+    container_name: sshd
+    restart: unless-stopped
+    volumes:
+      - ${MOUNT_POINT}/sshd/travis-ci/id_rsa.pub:/etc/authorized_keys/travis-ci
+      - ${MOUNT_POINT}/sshd/media-rsync/id_rsa.pub:/etc/authorized_keys/media-rsync
+      - ${MOUNT_POINT}/public:/data/public
+      - ${MOUNT_POINT}/videos:/data/videos
+    environment:
+      - SSH_USERS=travis-ci:1000:1000,media-rsync:1001:1001
+
+  ###################
+  # Social Services
+  ###################
+  murmur:
+    image: goofball222/murmur
+    container_name: murmur
+    restart: unless-stopped
+    # Startup uses a custom command so we can inject secrets from .env=
+    command: |
+      /bin/sh -c "cat /opt/murmur/config/murmur.ini-template | sed \
+        -e \"s/ICE_SECRET/$${ICE_SECRET}/g\" \
+        -e \"s/WELCOME_TEXT/\\\"$$(tr -d '\n' < /opt/murmur/config/motd.html | sed 's:/:\\\\/:g')\\\"/g\" \
+        > /opt/murmur/config/murmur.ini \
+        && docker-entrypoint.sh murmur"
+    ports:
+      - 64738:64738
+      - 64738:64738/udp
+      - 6502:6502
+    volumes:
+      - ${MOUNT_POINT}/murmur/conf:/opt/murmur/config
+      - ${MOUNT_POINT}/murmur/data:/opt/murmur/data
+      # - /etc/letsencrypt/live/mumble.sybolt.com:/opt/murmur/cert
+    environment:
+      - ICE_SECRET=${ICE_SECRET}
+
+  sybot:
+    image: mcmanning/sybot
+    container_name: sybot
+    restart: unless-stopped
+    depends_on:
+      # ICE connection dependencies
+      - murmur
+    ports:
+      - 5000:5000
+    environment:
+      - DEBUG=0
+      - ICE_HOST=murmur
+      - ICE_PORT=6502
+      - ICE_SECRET=${ICE_SECRET}
+
+  ###################
+  # Media Services
+  ###################
+  transmission:
+    image: haugene/transmission-openvpn
+    container_name: transmission-openvpn
+    restart: unless-stopped
+    ports:
+      - 9091:9091
+      - 8888:8888
+    dns:
+      # Point to Google's DNS servers
+      - 8.8.8.8
+      - 8.8.4.4
+    # networks:
+    #   - pitch-pipe
+    volumes:
+      - ${MOUNT_POINT}/transmission:/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - OPENVPN_PROVIDER=${VPN_PROVIDER}
+      - OPENVPN_CONFIG=${VPN_CONFIG}
+      - OPENVPN_USERNAME=${VPN_USERNAME}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+      - WEBPRODXY_ENABLED=false
+
+  sonarr:
+    image: "linuxserver/sonarr:120"
+    # image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    # networks:
+    #   - pitch-pipe
+    volumes:
+      - ${MOUNT_POINT}/sonarr/config:/config
+      - ${MOUNT_POINT}/transmission:/data
+      - ${MOUNT_POINT}/videos/tv:/tv
+      - ${MOUNT_POINT}/videos/cartoons:/cartoons
+      - ${MOUNT_POINT}/videos/anime:/anime
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=America/New_York
+      - MONO_TLS_PROVIDER=legacy
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    # networks:
+    #   - pitch-pipe
+    volumes:
+      - ${MOUNT_POINT}/radarr/config:/config
+      - ${MOUNT_POINT}/transmission:/data
+      - ${MOUNT_POINT}/videos/movies:/movies
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=America/New_York
+      - MONO_TLS_PROVIDER=legacy
+
+# networks:
+#   pitch-pipe:
+#     driver: bridge
+
+  # TODO: sshd for Travis CI to dump deployment files for nginx to pick up
+  # TODO: certbot (probably as a systemd service) to update certs and do container reloads
+  #   at least: nginx reload and whatever the murmur equivalent is - probably a full restart
+  #   since it doesn't seem to support what we need: https://github.com/mumble-voip/mumble/issues/1972
+
+
+  # webhooks:
+  #   # May no longer be necessary using the ssh drop + watchtower option.
+  #   image: almir/webhook
+  #   container_name: webhook
+  #   command: ["-verbose", "-hooks=/etc/webhook/hooks.yaml", "-hotreload"]
+  #   ports:
+  #   - 9000:9000
+  #   volumes:
+  #   - ./webhook:/etc/webhook
+  #   restart: on-failure
+
