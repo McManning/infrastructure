@@ -11,7 +11,7 @@ Includes configurations for both Kubernetes clustering and Docker Compose for si
 
 |Service                                        |Description
 |---                                            |---
-|[nginx](https://github.com/McManning/nginx)    |Ingress to web services and RTMP
+|[docker-nginx](https://github.com/McManning/docker-nginx)|Ingress to web services and RTMP
 |watchtower                                     |Auto update for Docker containers
 |sshd                                           |Endpoint for Travis CI deployments and media rsync
 |certbot                                        |Auto update for Let's Encrypt certificates
