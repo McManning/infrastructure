@@ -99,6 +99,7 @@ services:
     image: haugene/transmission-openvpn
     container_name: transmission-openvpn
     restart: unless-stopped
+    privileged: true
     ports:
       - 9091:9091
       - 8888:8888
