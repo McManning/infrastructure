@@ -74,4 +74,8 @@ VPN_CONFIG=<string>
 
 # Murmur ICE password (rw) for sybot service
 ICE_SECRET=<string>
+
+# Transmission web console credentials
+TRANSMISSION_USERNAME=<string>
+TRANSMISSION_PASSWORD=<string>
 ```
