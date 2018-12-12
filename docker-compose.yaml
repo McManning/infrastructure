@@ -25,7 +25,7 @@ services:
     volumes:
       - ${MOUNT_POINT}/nginx/conf:/etc/nginx/conf
       - ${MOUNT_POINT}/public:/usr/local/nginx/html
-      # - /etc/letsencrypt:/etc/nginx/certs
+      - ${LETS_ENCRYPT}:/etc/letsencrypt
     environment:
       - RUN_CHOWN=false
 
@@ -165,10 +165,6 @@ services:
 #     driver: bridge
 
   # TODO: sshd for Travis CI to dump deployment files for nginx to pick up
-  # TODO: certbot (probably as a systemd service) to update certs and do container reloads
-  #   at least: nginx reload and whatever the murmur equivalent is - probably a full restart
-  #   since it doesn't seem to support what we need: https://github.com/mumble-voip/mumble/issues/1972
-
 
   # webhooks:
   #   # May no longer be necessary using the ssh drop + watchtower option.

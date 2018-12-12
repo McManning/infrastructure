@@ -56,7 +56,7 @@ When using the Docker Compose build, the following values need to be set in `.en
 # Host subdirectory to mount persistent volumes (e.g. /srv)
 MOUNT_POINT=<string>
 
-# Certificate storage/renewal mount
+# Production certificate storage volume
 LETS_ENCRYPT=/etc/letsencrypt
 
 # User/group to run sonarr/radarr/transmission services under
