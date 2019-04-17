@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Look Mah I'm On TV</title>
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+  <style>
+    
+    body {
+      margin: 0;
+    }
+    
+    .video-js.full-window {
+      padding-top: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <video id="stream" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" 
+         controls preload="auto" 
+         data-setup='{}'>
+    <source 
+            src="https://sybolt.com/hls/test/index.m3u8" 
+            type="application/x-mpegURL">
+  </video>
+
+  <script>
+    
+    // Because I can't figure this shit out in pure CSS
+    window.onresize = function () {
+      // aspect ratio check
+      if (window.innerWidth / window.innerHeight > 1.77) {
+        
+        window.player.el_.classList.add('full-window');
+      } else {
+        
+        window.player.el_.classList.remove('full-window');
+      }
+    }
+    
+    var video = videojs('stream').ready(function(){
+      window.player = this;
+
+      player.on('ended', function() {
+        console.log('ENDED');
+      });
+      
+      player.on('play', function() {
+          console.log('PLAY');
+      });
+      
+      player.on('error', function () {
+        
+          console.log('WELL SHIT');
+      });
+      
+      player.on('loadeddata', function() {
+          console.log('LOADEDDATA');
+        //player.seekable().end(0);
+       //debugger;
+      });
+      
+      player.on('loadedmetadata', function() {
+        console.log('LOADEDMETADATA');
+        console.log('META Segment time: ', player.tech_.hls.segmentXhrTime);
+        console.log('META Duration: ', player.duration());
+        console.log('META Time: ', player.currentTime());
+        //  player.currentTime(10);
+      });
+
+      player.on('progress', function() {
+        console.log('PROGRESS');
+      });
+      
+      player.tech_.hls.xhr.beforeRequest = function(options) {
+        // options.uri = options.uri.replace('example.com', 'foo.com');
+        console.log('XHR Segment time: ', player.tech_.hls.segmentXhrTime);
+        console.log('XHR Duration: ', player.duration());
+        console.log('XHR Time: ', player.currentTime());
+        console.log('XHR SEEK: ', player.seekable().end(0));
+        
+       // player.currentTime( player.seekable().end(0));
+        //if (player.currentTime() < 30 
+        //   player.currentTime() < 10) {
+        //  console.log('FORCE SEEK');
+        //  player.currentTime(30);
+      // }
+        return options;
+      };
+      
+    });
+
+    video.play();
+    
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,122 @@
+
+/*! minireset.css v0.0.3 | MIT License | github.com/jgthms/minireset.css */html,body,p,ol,ul,li,dl,dt,dd,blockquote,figure,fieldset,legend,textarea,pre,iframe,hr,h1,h2,h3,h4,h5,h6{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}ul{list-style:none}button,input,select,textarea{margin:0}html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}img,embed,iframe,object,audio,video{height:auto;max-width:100%}iframe{border:0}table{border-collapse:collapse;border-spacing:0}td,th{padding:0;text-align:left}
+
+@-webkit-keyframes drift {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  from {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes drift {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  from {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+body {
+  background: #e6e1db;
+  font-family: Arial;
+}
+
+.splash {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+.splash__title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 15vh;
+  color: #e6e1db;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  font-size: 3em;
+}
+
+.splash__wave {
+  opacity: 1;
+  position: absolute;
+  bottom: 12%;
+  left: 30%;
+  background: #2e2c2a;
+  width: 500vw;
+  height: 500vw;
+  margin-left: -250vw;
+  margin-top: -250vw;
+  /*transform-origin: 50% 48%;*/
+  border-radius: 48%;
+  -webkit-animation: drift 5000ms infinite linear;
+          animation: drift 5000ms infinite linear;
+}
+
+.splash__wave--one {
+  opacity: 0.2;
+  background: #4CAF50;
+}
+
+.splash__wave--two {
+  -webkit-animation: drift 8000ms infinite linear;
+          animation: drift 8000ms infinite linear;
+  opacity: 0.5;
+  background: #4CAF50;
+}
+
+.splash__wave--three {
+  -webkit-animation: drift 12000ms infinite linear;
+          animation: drift 12000ms infinite linear;
+}
+
+.splash .logo {
+  width: 80vw;
+  height: 50vh;
+  padding-top: 25vh;
+  margin-top: -15vh;
+  box-sizing: initial;
+  -webkit-filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.2));
+          filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.2));
+}
+
+.splash .logo__world--moon, .splash .logo__world--ring {
+  fill: #e6e1db;
+  fill-opacity: 1;
+  stroke: none;
+}
+
+.splash .logo__world--sky {
+  fill: #977fA6;
+  fill-opacity: 0.4;
+  stroke: none;
+}
+
+footer {
+  color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1em 2em;
+  box-sizing: border-box;
+  font-size: 0.8em;
+}
+
+.privacy {
+  float: right;
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
