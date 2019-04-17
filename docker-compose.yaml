@@ -100,11 +100,12 @@ services:
   transmission:
     image: haugene/transmission-openvpn
     container_name: transmission-openvpn
-    restart: unless-stopped
+    restart: always
     privileged: true
     ports:
-      - 9091:9091
-      - 8888:8888
+      - "9091:9091"
+      - "8888:8888"
+      - "51413:51413"
     dns:
       # Point to Google's DNS servers
       - 8.8.8.8
@@ -117,7 +118,6 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - WEBPROXY_ENABLED=false
       - OPENVPN_PROVIDER=${VPN_PROVIDER}
       - OPENVPN_CONFIG=${VPN_CONFIG}
       - OPENVPN_USERNAME=${VPN_USERNAME}
@@ -185,4 +185,5 @@ services:
   #   volumes:
   #   - ./webhook:/etc/webhook
   #   restart: on-failure
+
 
