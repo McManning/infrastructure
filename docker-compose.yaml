@@ -73,7 +73,7 @@ services:
     volumes:
       - ${MOUNT_POINT}/murmur/conf:/opt/murmur/config
       - ${MOUNT_POINT}/murmur/data:/opt/murmur/data
-      # - /etc/letsencrypt/live/mumble.sybolt.com:/opt/murmur/cert
+      - ${LETS_ENCRYPT}:/etc/letsencrypt
     environment:
       - ICE_SECRET=${ICE_SECRET}
 

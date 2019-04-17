@@ -13,8 +13,8 @@ port=64738
 bandwidth=72000
 users=100
 
-# sslCert=/opt/murmur/cert/fullchain.pem
-# sslKey=/opt/murmur/cert/privkey.pem
+sslCert=/etc/letsencrypt/live/mumble.sybolt.com/fullchain.pem
+sslKey=/etc/letsencrypt/live/mumble.sybolt.com/privkey.pem
 
 channelnestinglimit=10
 textmessagelength=5000
