@@ -76,6 +76,8 @@ services:
       - ${LETS_ENCRYPT}:/etc/letsencrypt
     environment:
       - ICE_SECRET=${ICE_SECRET}
+      - PGID=${PGID}
+      - PUID=${PUID}
 
   sybot:
     image: mcmanning/sybot
