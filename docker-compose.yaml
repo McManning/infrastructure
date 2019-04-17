@@ -152,8 +152,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=America/New_York
-      - MONO_TLS_PROVIDER=legacy
-
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -170,7 +168,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=America/New_York
-      - MONO_TLS_PROVIDER=legacy
 
 # networks:
 #   pitch-pipe:
