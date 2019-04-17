@@ -134,8 +134,8 @@ services:
       - TRANSMISSION_SCRAPE_PAUSED_TORRENTS_ENABLED=0
 
   sonarr:
-    image: "linuxserver/sonarr:120"
-    # image: linuxserver/sonarr
+    # image: "linuxserver/sonarr:120"
+    image: linuxserver/sonarr
     container_name: sonarr
     restart: unless-stopped
     ports:
