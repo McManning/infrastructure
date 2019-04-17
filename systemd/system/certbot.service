@@ -3,13 +3,13 @@ Description=Let's Encrypt Certbot Renewal
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/docker run --rm \
-             -v "/etc/letsencrypt:/etc/letsencrypt" \
-             -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-             -v "/srv/infrastructure/public/letsencrypt:/data/letsencrypt" \
-             -v "/var/log/letsencrypt:/var/log/letsencrypt" \
-             certbot/certbot \
-                 renew \
-                 --webroot -w /data/letsencrypt \
-                 --quiet
-ExecStart=/usr/bin/docker kill --signal=HUP nginx
+ExecStart=/bin/bash -c "/usr/bin/docker run --rm \
+    -v \"/etc/letsencrypt:/etc/letsencrypt\" \
+    -v \"/var/lib/letsencrypt:/var/lib/letsencrypt\" \
+    -v \"/srv/infrastructure/public/letsencrypt:/data/letsencrypt\" \
+    -v \"/var/log/letsencrypt:/var/log/letsencrypt\" \
+    certbot/certbot \
+        renew \
+        --webroot -w /data/letsencrypt \
+    && /usr/bin/docker container exec nginx nginx -s reload"
+
