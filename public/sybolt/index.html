@@ -7,18 +7,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <link rel="shortcut icon" href="/favicon.ico">
-    <!-- <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
 
-    <link rel="stylesheet" href="/index.css">
+    <style>
+        /*! minireset.css v0.0.3 | MIT License | github.com/jgthms/minireset.css */html,body,p,ol,ul,li,dl,dt,dd,blockquote,figure,fieldset,legend,textarea,pre,iframe,hr,h1,h2,h3,h4,h5,h6{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}ul{list-style:none}button,input,select,textarea{margin:0}html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}img,embed,iframe,object,audio,video{height:auto;max-width:100%}iframe{border:0}table{border-collapse:collapse;border-spacing:0}td,th{padding:0;text-align:left}
+
+        body {
+            background: #e6e1db;
+            font-family: Arial;
+        }
+
+        .splash {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+        }
+
+        .splash__title {
+            width: 100%;
+            text-align: center;
+            line-height: 15vh;
+            color: #e6e1db;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            font-size: 3em;
+
+            background: #2e2c2a;
+        }
+
+        #splash-canvas {
+            width: 100%;
+            height: 150px;
+        }
+
+        .logo {
+            width: 80vw;
+            height: 50vh;
+            padding-top: 25vh;
+            margin-top: -15vh;
+            box-sizing: initial;
+            -webkit-filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.2));
+                    filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        .logo__world--moon, .logo__world--ring {
+            fill: #e6e1db;
+            fill-opacity: 1;
+            stroke: none;
+        }
+
+        .logo__world--sky {
+            fill: #977fA6;
+            fill-opacity: 0.4;
+            stroke: none;
+        }
+    </style>
 
     <title>Sybolt</title>
 </head>
 <body>
     <main class="splash">
-        <div class="splash__wave splash__wave--one"></div>
-        <div class="splash__wave splash__wave--two"></div>
-        <div class="splash__wave splash__wave--three"></div>
-
         <div class="splash__title">
             <svg class="logo"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -44,7 +93,57 @@
             </svg>
             <div>sybolt</div>
         </div>
+        <canvas id="splash-canvas"></canvas>
     </main>
+    
+<script>
+    const canvas = document.getElementById('splash-canvas');
+    const ctx = canvas.getContext('2d');
+    const ch = canvas.height;
+    const cw = canvas.width;
+
+    function curve(dt, style, offset) {
+        ctx.fillStyle = style;
+        
+        const left = Math.abs(Math.pow(Math.sin(dt / 1000), 2)) * 50 + 80 + offset;
+        const right = Math.abs(Math.pow(Math.sin((dt / 1000) + 10), 2)) * 100 + offset;
+        const leftCp = Math.abs(Math.pow(Math.sin((dt / 1000) + 2), 2)) * 100 + offset;
+        const rightCp = Math.abs(Math.pow(Math.sin((dt / 1000) + 1), 2)) * 100 + offset;
+        
+        ctx.beginPath();
+        ctx.moveTo(0, left);
+        
+        ctx.bezierCurveTo(
+            cw / 3,                 // cp1x
+            leftCp,                 // cp1y
+            cw / 3 * 2,             // cp2x
+            rightCp,                // cp2y 
+            cw,                     // end x
+            right                   // end y 
+        );
+
+        ctx.lineTo(cw, 0);
+        ctx.lineTo(0, 0);
+        ctx.lineTo(0, left);
+        
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function draw(dt) {
+        const y = Math.sin(dt*0.001) * 120;
+        canvas.width = canvas.width;
+
+        curve(dt*1.2, '#c7d7bf', 20);
+        curve(dt*1.2+200, '#89c387', 10);
+        curve(dt, '#2e2c2a', 0);
+
+        window.requestAnimationFrame(draw);
+    }
+
+    window.requestAnimationFrame(draw);
+
+</script>
+
 </body>
 </html>
-
