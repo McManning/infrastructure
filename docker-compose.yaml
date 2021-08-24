@@ -94,6 +94,35 @@ services:
       - ICE_PORT=6502
       - ICE_SECRET=${ICE_SECRET}
 
+  botamusique:
+    image: azlux/botamusique
+    container_name: botamusique
+    hostname: botamusique
+    restart: on-failure
+    depends_on:
+      - murmur
+    # Inject values from .env and comment.html on startup.
+    # Entrypoint is replaced as well since botamusique's entry does some
+    # extra copying of envvars to command line args that won't work here.
+    entrypoint: /bin/sh
+    command: |
+      -c "cat /config/configuration.ini-template | sed \
+        -e \"s/<USERNAME>/${BOTAMUSIQUE_USERNAME}/g\" \
+        -e \"s/<CHANNEL>/${BOTAMUSIQUE_CHANNEL}/g\" \
+        -e \"s/<WEB_USERNAME>/${BOTAMUSIQUE_WEB_USERNAME}/g\" \
+        -e \"s/<WEB_PASSWORD>/${BOTAMUSIQUE_WEB_PASSWORD}/g\" \
+        -e \"s/<COMMENT>/$$(tr -d '\n' < /config/comment.html | sed 's:/:\\\\/:g')/g\" \
+        > /config/configuration.ini \
+        && /botamusique/entrypoint.sh venv/bin/python mumbleBot.py"
+    ports:
+      - 8181:8181
+    volumes:
+      - ${MOUNT_POINT}/botamusique/music:/music
+      - ${MOUNT_POINT}/botamusique/config:/config
+    environment:
+      BAM_CONFIG_file: /config/configuration.ini
+
+
   ###################
   # Media Services
   ###################

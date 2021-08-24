@@ -5,6 +5,8 @@ Collection of services running on my host(s).
 
 Includes configurations for both Kubernetes clustering and Docker Compose for single hosts.
 
+>**Warning:** The k8s stuff was never actually used in production and is horribly out of date / misconfigured at this point. Avoid and just stick to Docker Compose. 
+
 ## Services Directory
 
 ### General
@@ -21,7 +23,8 @@ Includes configurations for both Kubernetes clustering and Docker Compose for si
 |Service                                        |Description
 |---                                            |---
 |murmur                                         |Voice server
-|[sybot](https://github.com/McManning/sybot)    |Bot for the murmur voice server
+|[sybot](https://github.com/McManning/sybot)    |Bot for the murmur voice server for thumbnailing links and other typical commands
+|[botamusique](https://github.com/azlux/botamusique/) |Another murmur bot for audio playback 
 
 ### Media
 
@@ -78,4 +81,10 @@ ICE_SECRET=<string>
 # Transmission web console credentials
 TRANSMISSION_USERNAME=<string>
 TRANSMISSION_PASSWORD=<string>
+
+# Botamusique configurations
+BOTAMUSIQUE_USERNAME=<string>
+BOTAMUSIQUE_CHANNEL=<string>
+BOTAMUSIQUE_WEB_USERNAME=<string>
+BOTAMUSIQUE_WEB_PASSWORD=<string>
 ```

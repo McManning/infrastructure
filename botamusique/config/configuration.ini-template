@@ -1,0 +1,179 @@
+# ========================================================
+#  botamusique Configuration File
+#  Version 6
+# ========================================================
+
+# [server] section tells the bot how to connect to your murmur server.
+# This section will be overridden by command line arguments.
+[server]
+host = murmur
+port = 64738
+#password =
+channel = <CHANNEL>
+#tokens = token1,token2
+#certificate =
+
+# [bot] section stores some basic settings of the behavior of the bot.
+[bot]
+# 'username' is the user name of the bot.
+# 'comment' is the comment displayed by the bot.
+username = <USERNAME>
+comment = <COMMENT>
+
+# 'language': Available languages can be found inside lang/ folder.
+#language=en_US
+
+# 'music_folder': Folder that stores your local songs.
+music_folder = /music/
+
+# 'database_path': The path of the database. The database will store things like your volume
+#    set by command !volume, your playback mode and your playlist, banned URLs, etc.
+#    This option will be overridden by command line arguments.
+# 'music_database_path': The path of database that stores the music library. Can be disabled by
+#    setting 'save_music_library=False'
+database_path=/config/settings.db
+music_database_path=/config/music.db
+
+# 'admin': Users allowed to kill the bot, or ban URLs. Separated by ';'
+#admin = User1;User2;
+
+# 'stereo': After 1.4.0, mumble starts to support stereo stream. Enable this option for stereo
+#    stream transmission. Otherwise the bot will down mix stereo sound into mono.
+#stereo = True
+
+# 'volume' is default volume from 0 to 1.
+# This option will be overridden by value in the database.
+#volume = 0.1
+
+# 'playback_mode' defined the playback mode of the bot.
+#    it should be one of "one-shot" (remove item once played), "repeat" (looping through the playlist),
+#    or "random" (randomize the playlist), "autoplay" (randomly grab something from the music library).
+#    This option will be overridden by value in the database.
+# 'autoplay_length': how many songs the autoplay mode fills the playlist
+# 'clear_when_stop_in_oneshot': clear the playlist when stop the bot in one-shot mode.
+#playback_mode = one-shot
+#autoplay_length = 5
+#clear_when_stop_in_oneshot = False
+
+# target version, stable or testing (testing need to bot installed with git)
+# stable will use simple bash with curl command to get releases, testing will follow github master branch with git commands
+#target_version = stable
+
+# 'tmp_folder': Folder that stores the downloaded music.
+# 'tmp_folder_max_size': in MB, 0 for no cache, -1 for unlimited size
+# 'ignored_folders', 'ignored_files': files and folders that would be ignored during scanning.
+#tmp_folder = /tmp/
+#tmp_folder_max_size = 10
+#ignored_folders = tmp
+#ignored_files = Thumbs.db
+
+# 'download_attempts': how many times the bot will try to download an item
+#download_attempts = 2
+
+# 'auto_check_update': check for updates every time the bot starts
+#auto_check_update = True
+#pip3_path = venv/bin/pip
+
+# 'logfile': write logs into this file.
+#logfile =
+
+announce_current_music = False
+allow_other_channel_message = False
+#allow_private_message = True
+
+# 'save_music_library': If this is set True, the bot will save the metadata of music into the database.
+save_music_library = True
+
+# 'refresh_cache_on_startup': If this is set true, the bot will refresh its music directory cache when starting up.
+#     But it won't reload metadata from each files. If set to False, it will used the cache last time.
+#refresh_cache_on_startup = True
+
+# 'save_playlist': If save_playlist is set True, the bot will save current playlist before quitting
+#    and reload it the next time it start. It requires save_music_library to be True to function.
+save_playlist = True
+
+# 'max_track_playlist': Maximum track played when a playlist is added.
+#max_track_playlist = 20
+
+# 'max_track_duration': Maximum music duration (minutes)
+#max_track_duration = 60
+
+# 'ducking': If ducking is enabled, the bot will automatically attenuate its
+#     volume when someone is talking.
+#ducking = False
+#ducking_volume = 0.05
+#ducking_threshold = 3000
+
+# 'when_nobody_in_channel': Specify what the bot should do if nobody is in the channel.
+#    Possible value of this options are:
+#     - "pause",
+#     - "pause_resume" (pause and resume once somebody re-enters the channel)
+#     - "stop" (also clears playlist)
+#     - leave empty (do nothing)
+#when_nobody_in_channel =
+
+# [webinterface] stores settings related to the web interface.
+[webinterface]
+# 'enable': Set 'enabled' to True if you'd like to use the web interface to manage
+#     your playlist, upload files, etc.
+#     The web interface is disable by default for security and performance reason.
+# 'access_address': Used when user are questing the address to access the web interface.
+enabled = True
+listening_addr = 0.0.0.0
+listening_port = 8181
+is_web_proxified = True
+# This is the public URL
+access_address = http://sybolt.com:8181
+
+# 'web_logfile': write access logs of the web server into this file.
+#web_logfile =
+
+# 'auth_method': Method used to authenticate users accessing the web interface.
+#                Options are 'none', 'password' or 'token' (use unique token, see
+#                requests_webinterface_access command)
+# 'max_attempts': Bad access attempts before being banned. Regenerating a token or
+#                 rebooting the bot will reset this attempts tally.
+auth_method = password
+max_attempts = 10
+
+# 'user', 'password': If auth_method set to 'password', you need to set the default
+#                     username and password. You can add more users by '!webadduser'
+user = <WEB_USERNAME>
+password = <WEB_PASSWORD>
+
+# 'flask_secret': To use token, flask need a password to encrypt/sign cookies.
+#                 !! YOU NEED TO CHANGE IT IF auth_method IS 'token'!!
+# flask_secret = ChangeThisPassword
+
+# 'upload_enabled': Enable the upload function of the web interface.
+# 'maximum_upload_file_size': Unit can be 'B', 'KB', 'MB', 'GB', 'TB'.
+# 'delete_allowed': Allow users to delete a file from the library(hard disk).
+upload_enabled = True
+max_upload_file_size = 30MB
+delete_allowed = True
+
+# [debug] stores some debug settings.
+[debug]
+# 'ffmpeg': Set ffmpeg to True if you want to display DEBUG level log of ffmpeg.
+#ffmpeg = False
+#mumbleConnection = False
+
+# [radio] is a list of default radio stations.
+[radio]
+# List of radio you want to have by default
+# one line by entrie
+#jazz = http://jazz-wr04.ice.infomaniak.ch/jazz-wr04-128.mp3 "Jazz Yeah !"
+
+
+# [commands] is settings related to user command sent via mumble message.
+[commands]
+# 'command_symbol' is a list of characters the bot recognizes as command prefix.
+#command_symbol = !:！
+# 'split_username_at_space': This option split username, in case you use such kind of mumo plugins https://wiki.mumble.info/wiki/Mumo#Set_Status
+#split_username_at_space = False
+
+
+# You may also customize commands recognized by the bot. For a full list of commands,
+#    see configuration.default.ini. Copy options you want to edit into this file.
+#play_file = file, f
+#play_file_match = filematch, fm
