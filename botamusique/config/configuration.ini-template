@@ -123,7 +123,7 @@ listening_addr = 0.0.0.0
 listening_port = 8181
 is_web_proxified = True
 # This is the public URL
-access_address = http://sybolt.com:8181
+access_address = https://sybolt.com/markbot
 
 # 'web_logfile': write access logs of the web server into this file.
 #web_logfile =
