@@ -24,7 +24,7 @@ Includes configurations for both Kubernetes clustering and Docker Compose for si
 |---                                            |---
 |murmur                                         |Voice server
 |[sybot](https://github.com/McManning/sybot)    |Bot for the murmur voice server for thumbnailing links and other typical commands
-|[botamusique](https://github.com/azlux/botamusique/) |Another murmur bot for audio playback 
+|markbot |Another murmur bot for audio playback using [azlux/botamusique](https://github.com/azlux/botamusique/)
 
 ### Media
 
