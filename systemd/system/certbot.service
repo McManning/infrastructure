@@ -11,5 +11,5 @@ ExecStart=/bin/bash -c "/usr/bin/docker run --rm \
     certbot/certbot \
         renew \
         --webroot -w /data/letsencrypt \
-    && /usr/bin/docker container exec nginx nginx -s reload"
-
+    && /usr/bin/docker container exec nginx nginx -s reload
+    && /usr/bin/docker kill --signal=\"SIGUSR1\" murmur"
